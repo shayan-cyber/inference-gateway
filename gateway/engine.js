@@ -1,10 +1,10 @@
-import { ModelLimiter } from '../common/limiter.js';
-import { Histogram } from '../common/histogram.js';
-import { BucketSeries } from '../common/series.js';
-import { isoTime } from '../common/util.js';
+import { ModelLimiter } from '../shared/limiter.js';
+import { Histogram } from '../shared/histogram.js';
+import { BucketSeries } from '../shared/series.js';
+import { isoTime } from '../shared/util.js';
 import {
   S_OK, S_RATE_LIMITED, S_PERMANENT,
-} from '../common/proto.js';
+} from '../shared/proto.js';
 import { Deque } from './deque.js';
 import { CallbackDispatcher } from './callbacks.js';
 import { InflightTable } from './inflight.js';

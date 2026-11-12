@@ -27,16 +27,16 @@ its *current* limits allow. Every request has to be tracked to a final state alo
                                        batch tracking, callbacks
 ```
 
-* **Gateway main thread** (`src/gateway/server.js`) terminates HTTP and forwards each raw
+* **Gateway main thread** (`gateway/server.js`) terminates HTTP and forwards each raw
   request body to an engine shard, round-robin. It never parses batch bodies itself, so it
   stays cheap. Status lookups go to the shard encoded in the id (`b<shard>_…`).
-* **Engine shard** (`src/gateway/engine.js`, one per worker thread) parses and validates a
+* **Engine shard** (`gateway/engine.js`, one per worker thread) parses and validates a
   submission, applies admission control, queues requests per model, dispatches through the
   limiter, handles results and retries, completes batches and sends callbacks.
-* **Provider simulator** (`src/provider/`) is a separate process with N shard threads. It
+* **Provider simulator** (`tools/provider-sim/`) is a separate process with N shard threads. It
   enforces RPM/TPM itself (answers 429 when exceeded), so the limit checks in the
   reports come from the provider's own records, not from the gateway's.
-* **Load generator** (`src/loadgen/`) is an open-loop generator: it submits at the target
+* **Load generator** (`tools/loadgen/`) is an open-loop generator: it submits at the target
   rate whatever the gateway's completion rate, and counts every request as accepted,
   rejected or errored.
 
@@ -44,7 +44,7 @@ its *current* limits allow. Every request has to be tracked to a final state alo
 
 ### Two layers
 
-`ModelLimiter` (`src/common/limiter.js`) has:
+`ModelLimiter` (`shared/limiter.js`) has:
 
 1. **Pacing**: token buckets for requests and tokens that refill at `utilization × limit / 60 s`
    (default 98%) with a 250 ms burst. Traffic goes out evenly instead of spending the
@@ -148,7 +148,7 @@ endpoint. Backpressure works too: if the socket buffer fills, the engine stops d
 and so stops spending rate-limit budget, until it drains.
 
 Real providers expose HTTP/JSON APIs. Talking to one would put an HTTP client pool behind
-the same `enqueue/flush` interface (`src/gateway/provider-client.js`); at real-world
+the same `enqueue/flush` interface (`gateway/provider-client.js`); at real-world
 rates (~1k req/s per model) that costs nothing.
 
 ## 7. Choices and tradeoffs

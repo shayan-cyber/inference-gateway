@@ -12,7 +12,7 @@
  */
 import http from 'node:http';
 import { fileURLToPath } from 'node:url';
-import { parseArgs, num, fetchJson } from '../src/common/util.js';
+import { parseArgs, num, fetchJson } from '../shared/util.js';
 
 export function startCallbackSink({ port = 9900, failFirst = 2, gatewayUrl = null, quiet = false } = {}) {
   const attempts = [];

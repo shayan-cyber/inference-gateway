@@ -2,7 +2,7 @@
 /**
  * Load generator CLI.
  *
- *   node src/loadgen/cli.js --rate 2000 --duration 60 --models model-a:0.7,model-b:0.3 \
+ *   node tools/loadgen/cli.js --rate 2000 --duration 60 --models model-a:0.7,model-b:0.3 \
  *        --batch-size 100 --tokens 1000 [--token-jitter 0.2] [--payload-bytes 64] \
  *        [--mode batch|single] [--concurrency 64] [--workers 1] [--callback-url URL] \
  *        [--gateway http://127.0.0.1:8000] [--provider http://127.0.0.1:9000] \
@@ -17,12 +17,11 @@
 import path from 'node:path';
 import {
   parseArgs, num, bool, fetchJson, fmtInt,
-} from '../common/util.js';
+} from '../../shared/util.js';
 import { runLoad, parseModelMix } from './loadgen.js';
 import { writeReport } from '../report/render.js';
-import {
-  waitForDrain, summarizeRun, summaryMarkdown, envMarkdown, logProgress,
-} from '../../scenarios/lib.js';
+import { waitForDrain, logProgress } from './progress.js';
+import { summarizeRun, summaryMarkdown, envMarkdown } from '../report/summary.js';
 
 const a = parseArgs();
 const gateway = (a.gateway || 'http://127.0.0.1:8000').replace(/\/$/, '');
@@ -60,7 +59,7 @@ if (!provider) provider = { models: {}, limit_history: [] };
 const s = summarizeRun({
   load, atSubmitEnd: atEnd, finalStats: final, provider, warmupS: num(a.warmup, 0),
 });
-const md = `# Load run\n\n\`node src/loadgen/cli.js ${process.argv.slice(2).join(' ')}\`\n\n${summaryMarkdown(s)}\n\n## Environment\n${envMarkdown(s.environment)}`;
+const md = `# Load run\n\n\`node tools/loadgen/cli.js ${process.argv.slice(2).join(' ')}\`\n\n${summaryMarkdown(s)}\n\n## Environment\n${envMarkdown(s.environment)}`;
 console.log(`\n${md}`);
 if (a.out) {
   writeReport(path.resolve(a.out), {

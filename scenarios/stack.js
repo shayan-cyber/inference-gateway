@@ -9,7 +9,7 @@
  * Callback receiver (rejects first 2 attempts): http://127.0.0.1:9900/callback  (GET /received)
  */
 import path from 'node:path';
-import { parseArgs, num } from '../src/common/util.js';
+import { parseArgs, num } from '../shared/util.js';
 import { startStack, ROOT } from './lib.js';
 import { startCallbackSink } from './callback-sink.js';
 

@@ -2,8 +2,8 @@ import http from 'node:http';
 import { performance } from 'node:perf_hooks';
 import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
 import { fileURLToPath } from 'node:url';
-import { Histogram } from '../common/histogram.js';
-import { makeRng } from '../common/rng.js';
+import { Histogram } from '../../shared/histogram.js';
+import { makeRng } from '../../shared/rng.js';
 
 /**
  * Open-loop load generator. Submits batches (or single requests) to the gateway at a

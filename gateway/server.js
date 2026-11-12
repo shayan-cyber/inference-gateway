@@ -2,7 +2,7 @@
 /**
  * Inference gateway.
  *
- *   node src/gateway/server.js [--port 8000] [--provider http://127.0.0.1:9000] [--shards 1]
+ *   node gateway/server.js [--port 8000] [--provider http://127.0.0.1:9000] [--shards 1]
  *        [--config config/gateway.default.json] [--limit-sync-ms 1000]
  *
  * The main thread terminates HTTP and routes; each engine shard runs on its own
@@ -29,9 +29,9 @@ import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import {
   parseArgs, num, readJsonFile, readBody, sendJson, fetchJson, sleep, round,
-} from '../common/util.js';
-import { Histogram } from '../common/histogram.js';
-import { mergeRows } from '../common/series.js';
+} from '../shared/util.js';
+import { Histogram } from '../shared/histogram.js';
+import { mergeRows } from '../shared/series.js';
 import { MODEL_FIELDS, MODEL_FIELD_MERGE, DEFAULT_ENGINE_OPTIONS } from './engine.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));

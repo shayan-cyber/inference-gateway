@@ -2,7 +2,7 @@ import net from 'node:net';
 import { performance } from 'node:perf_hooks';
 import {
   FrameReader, T_RESULTS, encodeCalls, decodeResults,
-} from '../common/proto.js';
+} from '../shared/proto.js';
 
 function outBuf(m) {
   if (!m._out) m._out = { ids: [], toks: [], pays: [], n: 0, nameBuf: Buffer.from(m.name) };

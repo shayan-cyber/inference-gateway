@@ -2,7 +2,7 @@
 /**
  * Provider simulator.
  *
- *   node src/provider/server.js --config config/provider.default.json [--port 9000]
+ *   node tools/provider-sim/server.js --config config/provider.default.json [--port 9000]
  *        [--shards 1] [--shard-base-port 9100] [--host 127.0.0.1] [--seed 42]
  *
  * Control API (HTTP, JSON):
@@ -21,9 +21,9 @@ import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import {
   parseArgs, num, readJsonFile, readBody, sendJson,
-} from '../common/util.js';
-import { normalizeModel, modelToJson } from '../common/models.js';
-import { mergeRows } from '../common/series.js';
+} from '../../shared/util.js';
+import { normalizeModel, modelToJson } from '../../shared/models.js';
+import { mergeRows } from '../../shared/series.js';
 import { PROVIDER_FIELDS, PROVIDER_BUCKET_MS } from './sim.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));

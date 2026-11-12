@@ -4,7 +4,7 @@ import { performance } from 'node:perf_hooks';
 import { ProviderSim } from './sim.js';
 import {
   FrameReader, T_CALLS, decodeCalls, encodeResults,
-} from '../common/proto.js';
+} from '../../shared/proto.js';
 
 /** One provider shard: a TCP endpoint in front of a ProviderSim instance. */
 const { host, port, shardIndex, shardCount, models, seed } = workerData;

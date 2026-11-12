@@ -7,7 +7,7 @@
  *   node scenarios/run-all.js [--skip-bench]
  */
 import { spawnSync } from 'node:child_process';
-import { parseArgs, bool } from '../src/common/util.js';
+import { parseArgs, bool } from '../shared/util.js';
 import { ROOT } from './lib.js';
 
 const a = parseArgs();

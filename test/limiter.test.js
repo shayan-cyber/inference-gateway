@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { SlidingWindow, ModelLimiter } from '../src/common/limiter.js';
-import { makeRng } from '../src/common/rng.js';
+import { SlidingWindow, ModelLimiter } from '../shared/limiter.js';
+import { makeRng } from '../shared/rng.js';
 
 test('sliding window ages out buckets after 60s', () => {
   const w = new SlidingWindow(60_000, 100);

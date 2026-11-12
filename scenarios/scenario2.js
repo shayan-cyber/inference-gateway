@@ -14,10 +14,10 @@
 import path from 'node:path';
 import {
   parseArgs, num, fetchJson, fmtInt, round, sleep,
-} from '../src/common/util.js';
-import { runLoad, parseModelMix } from '../src/loadgen/loadgen.js';
-import { lineChart, writeReport, mdTable } from '../src/report/render.js';
-import { avgRate, seriesFor } from '../src/report/analyze.js';
+} from '../shared/util.js';
+import { runLoad, parseModelMix } from '../tools/loadgen/loadgen.js';
+import { lineChart, writeReport, mdTable } from '../tools/report/render.js';
+import { avgRate, seriesFor } from '../tools/report/analyze.js';
 import {
   startStack, waitForDrain, summarizeRun, summaryMarkdown, envMarkdown, reportDir, logProgress, pass, ROOT,
 } from './lib.js';

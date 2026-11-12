@@ -16,7 +16,7 @@ are committed under [`reports/`](reports/) and can be regenerated with `npm run 
 
 ### Simulation assumptions
 
-* The provider is the simulator in `src/provider/`. Per call it enforces RPM/TPM
+* The provider is the simulator in `tools/provider-sim/`. Per call it enforces RPM/TPM
   (strict trailing 60 s; 429 when exceeded), draws an outcome (transient error, timeout,
   permanent error or success), and draws a latency (lognormal from median and p99),
   all from a seeded RNG.
@@ -126,7 +126,7 @@ Profiling (`node --cpu-prof`, single engine shard at saturation) showed:
    ingest format (protobuf, Arrow) would roughly halve the per-request ingest cost.
 2. **The in-flight table (was ~10% plus most of the 8% GC).** The original `Map` of
    small objects was replaced by a preallocated typed-array ring keyed by call id
-   (`src/gateway/inflight.js`). In-process throughput went from ~840k/s to ~1.07M/s on
+   (`gateway/inflight.js`). In-process throughput went from ~840k/s to ~1.07M/s on
    14 threads.
 3. **Result bookkeeping (`onResult` / `_finalize`).** Per-request typed-array writes,
    histogram updates and per-second counters, about 15% together. Already compact.

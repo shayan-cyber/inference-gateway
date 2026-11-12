@@ -19,15 +19,15 @@ import { Worker } from 'node:worker_threads';
 import { fileURLToPath } from 'node:url';
 import {
   parseArgs, num, fetchJson, fmtInt, round, readJsonFile, bool,
-} from '../src/common/util.js';
-import { runLoad } from '../src/loadgen/loadgen.js';
-import { Histogram } from '../src/common/histogram.js';
-import { mergeRows } from '../src/common/series.js';
-import { MODEL_FIELDS, MODEL_FIELD_MERGE } from '../src/gateway/engine.js';
+} from '../shared/util.js';
+import { runLoad } from '../tools/loadgen/loadgen.js';
+import { Histogram } from '../shared/histogram.js';
+import { mergeRows } from '../shared/series.js';
+import { MODEL_FIELDS, MODEL_FIELD_MERGE } from '../gateway/engine.js';
 import {
   lineChart, writeReport, mdTable, environment,
-} from '../src/report/render.js';
-import { gatewayCompletions } from '../src/report/analyze.js';
+} from '../tools/report/render.js';
+import { gatewayCompletions } from '../tools/report/analyze.js';
 import {
   startStack, waitForDrain, envMarkdown, reportDir, logProgress, ROOT,
 } from './lib.js';

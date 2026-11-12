@@ -45,7 +45,7 @@ against the limit, queue depth, latency, and has a form to cap a model's limits.
 In another terminal, send some traffic:
 
 ```bash
-node src/loadgen/cli.js --rate 1200 --duration 60 --models model-a:0.6,model-b:0.4 --batch-size 100 --tokens 1000
+node tools/loadgen/cli.js --rate 1200 --duration 60 --models model-a:0.6,model-b:0.4 --batch-size 100 --tokens 1000
 ```
 
 ## Running the pieces separately
@@ -53,7 +53,7 @@ node src/loadgen/cli.js --rate 1200 --duration 60 --models model-a:0.6,model-b:0
 ### 1. Provider simulator
 
 ```bash
-node src/provider/server.js --config config/provider.default.json --port 9000 --shards 1
+node tools/provider-sim/server.js --config config/provider.default.json --port 9000 --shards 1
 ```
 
 * Control API on `:9000`; data plane on TCP `9100..9100+shards-1` (binary, pipelined).
@@ -81,7 +81,7 @@ repeatable.
 ### 2. Gateway
 
 ```bash
-node src/gateway/server.js --port 8000 --provider http://127.0.0.1:9000 --shards 1 --config config/gateway.default.json
+node gateway/server.js --port 8000 --provider http://127.0.0.1:9000 --shards 1 --config config/gateway.default.json
 ```
 
 On start it reads the models and limits from the provider, then keeps them in sync
@@ -146,7 +146,7 @@ succeeded). Results are inline up to 10,000 requests, otherwise `results` is `nu
 ### 3. Load generator
 
 ```bash
-node src/loadgen/cli.js --rate 2000 --duration 60 \
+node tools/loadgen/cli.js --rate 2000 --duration 60 \
   --models model-a:0.7,model-b:0.3 --batch-size 100 --tokens 1000 --token-jitter 0.2 \
   [--mode batch|single] [--payload-bytes 64] [--concurrency 64] [--workers 1] \
   [--callback-url http://127.0.0.1:9900/callback] [--out reports/my-run]
@@ -204,17 +204,23 @@ recorded it. See [BENCHMARK.md](BENCHMARK.md) for results, environment and bottl
 
 ## Repository layout
 
+The product is **`gateway/`**. Everything under `tools/` exists only to test it: a
+stand-in for the real provider, a traffic generator and report tooling. The gateway
+imports nothing from `tools/`; both sides share only `shared/`.
+
 ```
-src/common/     limiter (sliding window + pacing), histogram, binary protocol, series, model config
-src/provider/   simulator: control API (server.js), shard threads (shard-worker.js), simulation core (sim.js)
-src/gateway/    HTTP API (server.js), engine shard (engine.js, engine-worker.js), provider client, callbacks, dashboard
-src/loadgen/    open-loop load generator (loadgen.js) and CLI (cli.js)
-src/report/     metric analysis (limit checks against the provider's records) and report rendering
-scenarios/      scenario1-3, bench, stack (demo), callback-sink, shared harness
-config/         provider configs per scenario, gateway engine options
-reports/        generated evidence (committed)
-test/           unit and property tests (node:test)
-docs/DESIGN.md  architecture, limit semantics, overload behaviour, tradeoffs, 10B/min plan
+gateway/              THE APP: HTTP API (server.js), engine shard (engine.js, engine-worker.js),
+                      in-flight table, provider client, callbacks, dashboard
+shared/               code used by the gateway and the tools: limiter (sliding window + pacing),
+                      histogram, binary protocol, time series, model config, utils
+tools/provider-sim/   provider simulator: control API (server.js), shard threads, simulation core (sim.js)
+tools/loadgen/        open-loop load generator (loadgen.js), CLI (cli.js), progress/drain helpers
+tools/report/         metric analysis (limit checks against the provider's own counts), run summaries, rendering
+scenarios/            scenario1-3, bench, stack (demo), callback-sink, run-all, process harness
+config/               provider configs per scenario, gateway engine options
+reports/              generated evidence (committed)
+test/                 unit and property tests (node:test)
+docs/DESIGN.md        architecture, limit semantics, overload behaviour, tradeoffs, 10B/min plan
 ```
 
 ## Key design decisions (summary)

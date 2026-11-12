@@ -1,9 +1,9 @@
-import { ModelLimiter } from '../common/limiter.js';
-import { makeRng } from '../common/rng.js';
-import { BucketSeries } from '../common/series.js';
+import { ModelLimiter } from '../../shared/limiter.js';
+import { makeRng } from '../../shared/rng.js';
+import { BucketSeries } from '../../shared/series.js';
 import {
   S_OK, S_RATE_LIMITED, S_TRANSIENT, S_PERMANENT, S_TIMEOUT,
-} from '../common/proto.js';
+} from '../../shared/proto.js';
 
 /** Fields recorded per model in 100 ms buckets, keyed by the provider's wall clock. */
 export const PROVIDER_FIELDS = [

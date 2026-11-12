@@ -9,9 +9,9 @@
     "node": ">=20"
   },
   "scripts": {
-    "provider": "node src/provider/server.js",
-    "gateway": "node src/gateway/server.js",
-    "loadgen": "node src/loadgen/cli.js",
+    "provider": "node tools/provider-sim/server.js",
+    "gateway": "node gateway/server.js",
+    "loadgen": "node tools/loadgen/cli.js",
     "stack": "node scenarios/stack.js",
     "test": "node --test",
     "scenario1": "node scenarios/scenario1.js",

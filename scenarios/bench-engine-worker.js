@@ -1,10 +1,10 @@
 import { parentPort, workerData } from 'node:worker_threads';
 import { performance } from 'node:perf_hooks';
-import { Engine } from '../src/gateway/engine.js';
-import { InProcProvider } from '../src/gateway/provider-client.js';
-import { ProviderSim } from '../src/provider/sim.js';
-import { normalizeModel } from '../src/common/models.js';
-import { MODEL_FIELDS } from '../src/gateway/engine.js';
+import { Engine } from '../gateway/engine.js';
+import { InProcProvider } from '../gateway/provider-client.js';
+import { ProviderSim } from '../tools/provider-sim/sim.js';
+import { normalizeModel } from '../shared/models.js';
+import { MODEL_FIELDS } from '../gateway/engine.js';
 
 /**
  * In-process engine benchmark shard: generator -> JSON.parse -> Engine.submit ->

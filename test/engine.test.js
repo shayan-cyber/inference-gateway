@@ -2,12 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   Engine, SUCCEEDED, FAILED, EXPIRED, REJECTED,
-} from '../src/gateway/engine.js';
-import { InProcProvider } from '../src/gateway/provider-client.js';
-import { ProviderSim } from '../src/provider/sim.js';
-import { normalizeModel } from '../src/common/models.js';
-import { Histogram } from '../src/common/histogram.js';
-import { FrameReader, encodeCalls, decodeCalls, encodeResults, decodeResults } from '../src/common/proto.js';
+} from '../gateway/engine.js';
+import { InProcProvider } from '../gateway/provider-client.js';
+import { ProviderSim } from '../tools/provider-sim/sim.js';
+import { normalizeModel } from '../shared/models.js';
+import { Histogram } from '../shared/histogram.js';
+import { FrameReader, encodeCalls, decodeCalls, encodeResults, decodeResults } from '../shared/proto.js';
 
 function makeEngine(modelOverrides = {}, options = {}) {
   const cfg = normalizeModel({
@@ -131,7 +131,7 @@ test('binary protocol round-trips calls and results across chunk boundaries', ()
 });
 
 test('in-flight table survives growth, collisions and bulk removal', async () => {
-  const { InflightTable } = await import('../src/gateway/inflight.js');
+  const { InflightTable } = await import('../gateway/inflight.js');
   const t = new InflightTable(4);
   const live = new Map();
   for (let k = 0; k < 5000; k++) {

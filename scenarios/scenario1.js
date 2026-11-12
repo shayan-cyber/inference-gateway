@@ -15,10 +15,10 @@
 import path from 'node:path';
 import {
   parseArgs, num, fetchJson, fmtInt, round,
-} from '../src/common/util.js';
-import { runLoad } from '../src/loadgen/loadgen.js';
-import { lineChart, writeReport, mdTable } from '../src/report/render.js';
-import { seriesFor } from '../src/report/analyze.js';
+} from '../shared/util.js';
+import { runLoad } from '../tools/loadgen/loadgen.js';
+import { lineChart, writeReport, mdTable } from '../tools/report/render.js';
+import { seriesFor } from '../tools/report/analyze.js';
 import {
   startStack, waitForDrain, summarizeRun, summaryMarkdown, envMarkdown, reportDir, logProgress, pass, ROOT,
 } from './lib.js';

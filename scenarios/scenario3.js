@@ -12,14 +12,14 @@ import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import {
   parseArgs, num, fetchJson, fmtInt, round, sleep,
-} from '../src/common/util.js';
-import { makeRng } from '../src/common/rng.js';
-import { writeReport, mdTable, lineChart } from '../src/report/render.js';
-import { seriesFor } from '../src/report/analyze.js';
+} from '../shared/util.js';
+import { makeRng } from '../shared/rng.js';
+import { writeReport, mdTable, lineChart } from '../tools/report/render.js';
+import { seriesFor } from '../tools/report/analyze.js';
 import {
   startStack, envMarkdown, reportDir, pass, ROOT,
 } from './lib.js';
-import { environment } from '../src/report/render.js';
+import { environment } from '../tools/report/render.js';
 import { startCallbackSink } from './callback-sink.js';
 
 const a = parseArgs();
