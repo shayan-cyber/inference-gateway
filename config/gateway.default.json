@@ -1,0 +1,24 @@
+{
+  "engine": {
+    "utilization": 0.98,
+    "burstMs": 250,
+    "maxQueueWaitMs": 30000,
+    "defaultTtlMs": 120000,
+    "maxAttempts": 4,
+    "retryBaseMs": 100,
+    "retryMaxMs": 5000,
+    "rateLimitBackoffMs": 250,
+    "maxBatchSize": 100000,
+    "resultRetentionMs": 3600000,
+    "maxRetainedRequests": 20000000,
+    "callback": {
+      "maxAttempts": 8,
+      "baseDelayMs": 1000,
+      "maxDelayMs": 60000,
+      "timeoutMs": 10000,
+      "concurrency": 64,
+      "inlineResultsMax": 10000
+    }
+  },
+  "caps": {}
+}

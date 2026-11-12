@@ -1,0 +1,20 @@
+{
+  "models": [
+    {
+      "name": "model-a",
+      "rpm": 30000,
+      "tpm": 60000000,
+      "latency": { "distribution": "lognormal", "median_ms": 300, "p99_ms": 2000, "min_ms": 20, "max_ms": 30000 },
+      "outcomes": { "transient_error_rate": 0.08, "permanent_error_rate": 0.02, "timeout_rate": 0.01, "timeout_ms": 2000 },
+      "output_tokens_ratio": 0.25
+    },
+    {
+      "name": "model-b",
+      "rpm": 20000,
+      "tpm": 40000000,
+      "latency": { "distribution": "lognormal", "median_ms": 500, "p99_ms": 3000, "min_ms": 30, "max_ms": 30000 },
+      "outcomes": { "transient_error_rate": 0.08, "permanent_error_rate": 0.02, "timeout_rate": 0.01, "timeout_ms": 2000 },
+      "output_tokens_ratio": 0.25
+    }
+  ]
+}

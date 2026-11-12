@@ -1,0 +1,597 @@
+{
+  "mode": "e2e",
+  "config": {
+    "rate": 1000000,
+    "durationS": 30,
+    "batchSize": 5000,
+    "tokens": 500,
+    "payloadBytes": 32,
+    "provider_shards": 4,
+    "gateway_shards": 8,
+    "loadgen_workers": 4
+  },
+  "load": {
+    "options": {
+      "gateway": "http://127.0.0.1:8000",
+      "rate": 1000000,
+      "durationS": 30,
+      "models": [
+        {
+          "name": "model-a",
+          "weight": 1
+        },
+        {
+          "name": "model-b",
+          "weight": 1
+        }
+      ],
+      "batchSize": 5000,
+      "tokens": 500,
+      "tokenJitter": 0,
+      "payloadBytes": 32,
+      "concurrency": 64,
+      "callbackUrl": null,
+      "mode": "batch",
+      "workers": 4,
+      "idPrefix": "lg",
+      "includeIds": true,
+      "ttlMs": null,
+      "seed": 7
+    },
+    "startedAt": 1794427550118,
+    "endedAt": 1794427580157,
+    "submitted": 29955000,
+    "accepted": 29955000,
+    "rejected": 0,
+    "errors": 0,
+    "shortfall": 0,
+    "batchesSent": 5991,
+    "batchesAccepted": 5991,
+    "batchesRejected": 0,
+    "targetRate": 1000000,
+    "achievedSubmitRate": 997203.6352741435,
+    "ackLatencyMs": {
+      "count": 5991,
+      "mean": 12.91,
+      "p50": 8.83,
+      "p95": 30.46,
+      "p99": 78.85,
+      "max": 176.22
+    },
+    "perSecondFields": [
+      "t",
+      "submitted",
+      "accepted",
+      "rejected",
+      "errors"
+    ]
+  },
+  "drain": {
+    "drained": true,
+    "stats": {
+      "now": 1794427583216,
+      "started_at": "2026-11-11T20:05:49.915Z",
+      "pid": 15328,
+      "shards": 8,
+      "totals": {
+        "accepted": 29955000,
+        "rejected": 0,
+        "succeeded": 29939976,
+        "failed": 15024,
+        "expired": 0,
+        "dispatched": 29985055,
+        "retried": 30055,
+        "rateLimited": 0,
+        "lateResults": 0,
+        "providerDisconnects": 0,
+        "batchesAccepted": 5991,
+        "batchesRejected": 0,
+        "batchesPartiallyRejected": 0,
+        "batchesCompleted": 5991,
+        "evictedBatches": 0,
+        "inflight": 0,
+        "retryWaiting": 0,
+        "retainedRequests": 29955000,
+        "callbacksDelivered": 0,
+        "callbacksFailed": 0,
+        "callbackAttempts": 0,
+        "callbacksPending": 0,
+        "waiting": 0,
+        "completed": 29955000
+      },
+      "latency_ms": {
+        "end_to_end": {
+          "count": 29955000,
+          "mean": 93.42,
+          "p50": 74.75,
+          "p95": 223.23,
+          "p99": 356.35,
+          "max": 2704
+        },
+        "provider_round_trip": {
+          "count": 29955000,
+          "mean": 91.36,
+          "p50": 72.7,
+          "p95": 219.14,
+          "p99": 356.35,
+          "max": 2701
+        }
+      },
+      "batches": {
+        "accepted": 5991,
+        "rejected": 0,
+        "completed": 5991,
+        "completion_time_ms": {
+          "count": 5991,
+          "mean": 946.27,
+          "p50": 892.93,
+          "p95": 1392.64,
+          "p99": 1884.16,
+          "max": 2704
+        },
+        "callback_first_attempt_delay_ms": {
+          "count": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "callback_delivered_delay_ms": {
+          "count": 0,
+          "mean": null,
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "max": null
+        },
+        "callbacks": {
+          "delivered": 0,
+          "failed": 0,
+          "attempts": 0,
+          "pending": 0
+        }
+      },
+      "models": {
+        "model-a": {
+          "limits": {
+            "provider_rpm": 60000000000,
+            "provider_tpm": 60000000000000,
+            "cap_rpm": null,
+            "cap_tpm": null,
+            "effective_rpm": 60000000000,
+            "effective_tpm": 60000000000000
+          },
+          "queue_depth": 0,
+          "inflight": 0,
+          "paused_after_429": false,
+          "dispatched_last_60s": {
+            "requests": 14994865,
+            "tokens": 7497432500
+          },
+          "utilization_last_60s": {
+            "rpm": 0.0002,
+            "tpm": 0.0001
+          },
+          "latency_ms": {
+            "count": 14979964,
+            "mean": 74.4,
+            "p50": 60.93,
+            "p95": 169.98,
+            "p99": 260.1,
+            "max": 2100
+          }
+        },
+        "model-b": {
+          "limits": {
+            "provider_rpm": 60000000000,
+            "provider_tpm": 60000000000000,
+            "cap_rpm": null,
+            "cap_tpm": null,
+            "effective_rpm": 60000000000,
+            "effective_tpm": 60000000000000
+          },
+          "queue_depth": 0,
+          "inflight": 0,
+          "paused_after_429": false,
+          "dispatched_last_60s": {
+            "requests": 14990190,
+            "tokens": 7495095000
+          },
+          "utilization_last_60s": {
+            "rpm": 0.0002,
+            "tpm": 0.0001
+          },
+          "latency_ms": {
+            "count": 14975036,
+            "mean": 112.45,
+            "p50": 91.14,
+            "p95": 260.1,
+            "p99": 413.7,
+            "max": 2704
+          }
+        }
+      }
+    },
+    "ms": 3056
+  },
+  "totals": {
+    "accepted": 29955000,
+    "rejected": 0,
+    "succeeded": 29939976,
+    "failed": 15024,
+    "expired": 0,
+    "dispatched": 29985055,
+    "retried": 30055,
+    "rateLimited": 0,
+    "lateResults": 0,
+    "providerDisconnects": 0,
+    "batchesAccepted": 5991,
+    "batchesRejected": 0,
+    "batchesPartiallyRejected": 0,
+    "batchesCompleted": 5991,
+    "evictedBatches": 0,
+    "inflight": 0,
+    "retryWaiting": 0,
+    "retainedRequests": 29955000,
+    "callbacksDelivered": 0,
+    "callbacksFailed": 0,
+    "callbackAttempts": 0,
+    "callbacksPending": 0,
+    "waiting": 0,
+    "completed": 29955000
+  },
+  "latency_ms": {
+    "end_to_end": {
+      "count": 29955000,
+      "mean": 93.42,
+      "p50": 74.75,
+      "p95": 223.23,
+      "p99": 356.35,
+      "max": 2704
+    },
+    "provider_round_trip": {
+      "count": 29955000,
+      "mean": 91.36,
+      "p50": 72.7,
+      "p95": 219.14,
+      "p99": 356.35,
+      "max": 2701
+    }
+  },
+  "provider_totals": {
+    "calls": 29985055,
+    "accepted": 29985055,
+    "rateLimited": 0,
+    "unknownModel": 0,
+    "payloadBytes": 1349327475,
+    "pending": 0
+  },
+  "steady": {
+    "seconds": 24,
+    "mean_per_s": 999378.0833333334,
+    "min_per_s": 982628,
+    "median_per_s": 999471,
+    "peak_per_s": 1010758
+  },
+  "comp": [
+    [
+      1794427550000,
+      763386,
+      762962,
+      424,
+      0,
+      860681,
+      0
+    ],
+    [
+      1794427551000,
+      998878,
+      998333,
+      545,
+      0,
+      1000952,
+      0
+    ],
+    [
+      1794427552000,
+      996769,
+      996279,
+      490,
+      0,
+      986031,
+      0
+    ],
+    [
+      1794427553000,
+      1010758,
+      1010266,
+      492,
+      0,
+      1016023,
+      0
+    ],
+    [
+      1794427554000,
+      996721,
+      996236,
+      485,
+      0,
+      1000983,
+      0
+    ],
+    [
+      1794427555000,
+      1004519,
+      1004032,
+      487,
+      0,
+      1000955,
+      0
+    ],
+    [
+      1794427556000,
+      996256,
+      995740,
+      516,
+      0,
+      1000975,
+      0
+    ],
+    [
+      1794427557000,
+      1005333,
+      1004835,
+      498,
+      0,
+      996014,
+      0
+    ],
+    [
+      1794427558000,
+      995664,
+      995142,
+      522,
+      0,
+      986009,
+      0
+    ],
+    [
+      1794427559000,
+      999471,
+      998956,
+      515,
+      0,
+      1020937,
+      0
+    ],
+    [
+      1794427560000,
+      998417,
+      997943,
+      474,
+      0,
+      1000957,
+      0
+    ],
+    [
+      1794427561000,
+      1001885,
+      1001355,
+      530,
+      0,
+      1001053,
+      0
+    ],
+    [
+      1794427562000,
+      1002673,
+      1002124,
+      549,
+      0,
+      1001022,
+      0
+    ],
+    [
+      1794427563000,
+      996325,
+      995844,
+      481,
+      0,
+      980998,
+      0
+    ],
+    [
+      1794427564000,
+      996382,
+      995887,
+      495,
+      0,
+      1020926,
+      0
+    ],
+    [
+      1794427565000,
+      1003469,
+      1002972,
+      497,
+      0,
+      1001052,
+      0
+    ],
+    [
+      1794427566000,
+      1001777,
+      1001299,
+      478,
+      0,
+      1000999,
+      0
+    ],
+    [
+      1794427567000,
+      998778,
+      998283,
+      495,
+      0,
+      991013,
+      0
+    ],
+    [
+      1794427568000,
+      999128,
+      998602,
+      526,
+      0,
+      1011039,
+      0
+    ],
+    [
+      1794427569000,
+      998652,
+      998162,
+      490,
+      0,
+      1001031,
+      0
+    ],
+    [
+      1794427570000,
+      1006447,
+      1005957,
+      490,
+      0,
+      996005,
+      0
+    ],
+    [
+      1794427571000,
+      995350,
+      994814,
+      536,
+      0,
+      1006101,
+      0
+    ],
+    [
+      1794427572000,
+      1005145,
+      1004656,
+      489,
+      0,
+      1001059,
+      0
+    ],
+    [
+      1794427573000,
+      1001318,
+      1000825,
+      493,
+      0,
+      1001007,
+      0
+    ],
+    [
+      1794427574000,
+      982628,
+      982116,
+      512,
+      0,
+      986007,
+      0
+    ],
+    [
+      1794427575000,
+      1003195,
+      1002717,
+      478,
+      0,
+      1006064,
+      0
+    ],
+    [
+      1794427576000,
+      995033,
+      994487,
+      546,
+      0,
+      1011005,
+      0
+    ],
+    [
+      1794427577000,
+      1000508,
+      1000041,
+      467,
+      0,
+      1000964,
+      0
+    ],
+    [
+      1794427578000,
+      979134,
+      978682,
+      452,
+      0,
+      950933,
+      0
+    ],
+    [
+      1794427579000,
+      981160,
+      980672,
+      488,
+      0,
+      996004,
+      0
+    ],
+    [
+      1794427580000,
+      239805,
+      239721,
+      84,
+      0,
+      150256,
+      0
+    ],
+    [
+      1794427581000,
+      35,
+      35,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      1794427582000,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      1794427583000,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "startedAt": 1794427550118,
+  "endedAt": 1794427580157,
+  "submitted": 29955000,
+  "accepted": 29955000,
+  "rejected": 0,
+  "environment": {
+    "node": "v24.15.0",
+    "platform": "Windows_NT 10.0.26200 (win32/x64)",
+    "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+    "logical_cpus": 16,
+    "memory_gb": 15.6
+  }
+}

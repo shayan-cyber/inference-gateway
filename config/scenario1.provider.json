@@ -1,0 +1,12 @@
+{
+  "models": [
+    {
+      "name": "model-a",
+      "rpm": 50000,
+      "tpm": 100000000,
+      "latency": { "distribution": "lognormal", "median_ms": 300, "p99_ms": 2000, "min_ms": 20, "max_ms": 30000 },
+      "outcomes": { "transient_error_rate": 0.005, "permanent_error_rate": 0.001, "timeout_rate": 0, "timeout_ms": 5000 },
+      "output_tokens_ratio": 0.25
+    }
+  ]
+}

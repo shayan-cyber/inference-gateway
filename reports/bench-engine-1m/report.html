@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>bench engine-1m</title>
+<style>body{font:14px/1.5 system-ui,sans-serif;max-width:980px;margin:24px auto;padding:0 16px;color:#111827;background:#fff}pre{white-space:pre-wrap;background:#f9fafb;padding:12px;border-radius:6px}</style></head>
+<body><pre># Benchmark: engine + simulator in-process @ 1,000,000 req/s target
+
+Generated 2026-11-11T19:51:13.961Z by `node scenarios/bench.js --mode engine --rate 1000000 --duration 15 --shards 14`
+
+## Measured
+| metric | value |
+| --- | --- |
+| target submit rate (req/s) | 1,000,000 |
+| achieved submit rate (req/s) | 968,995 |
+| steady completion rate, mean (req/s) | **1,072,825** |
+| steady completion rate, median / min 1 s (req/s) | 1,001,264 / 962,922 |
+| peak 1 s completions | 1,636,611 |
+| steady window (s) | 9 |
+| submitted | 14,970,000 |
+| accepted / rejected | 14,970,000 / 0 |
+| completed (succeeded + failed) | 14,970,000 (14,962,337 + 7,663) |
+| expired / still waiting | 0 / 0 |
+| accounting balanced | yes |
+| retry attempts | 15,045 |
+| end-to-end latency p50 / p95 / p99 (ms) | 130.05 / 712.7 / 1007.62 |
+| provider round trip p50 / p95 / p99 (ms) | 111.62 / 548.86 / 778.24 |
+
+## Configuration
+| setting | value |
+| --- | --- |
+| rate | 1000000 |
+| durationS | 15 |
+| batchSize | 2000 |
+| tokens | 500 |
+| payloadBytes | 32 |
+| shards | 14 |
+
+Simulated models: model-a (latency p50 50 ms / p99 250 ms), model-b (p50 80 ms / p99 400 ms), 0.1% transient + 0.05% permanent errors, limits raised to 60B RPM so they do not bind. Traffic split 50/50.
+
+## Environment
+| environment | value |
+| --- | --- |
+| node | v24.15.0 |
+| platform | Windows_NT 10.0.26200 (win32/x64) |
+| cpu | 12th Gen Intel(R) Core(TM) i5-12500H |
+| logical_cpus | 16 |
+| memory_gb | 15.6 |</pre><div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="100%" style="max-width:900px;font:12px system-ui,sans-serif"><text x="64" y="18" font-weight="600" font-size="14">engine: requests completed per second (final provider outcome recorded) vs target</text><line x1="64" x2="884" y1="258" y2="258" stroke="#e5e7eb"/><text x="58" y="262" text-anchor="end" fill="#6b7280">0</text><line x1="64" x2="884" y1="213.2" y2="213.2" stroke="#e5e7eb"/><text x="58" y="217.2" text-anchor="end" fill="#6b7280">400k</text><line x1="64" x2="884" y1="168.39999999999998" y2="168.39999999999998" stroke="#e5e7eb"/><text x="58" y="172.39999999999998" text-anchor="end" fill="#6b7280">800k</text><line x1="64" x2="884" y1="123.6" y2="123.6" stroke="#e5e7eb"/><text x="58" y="127.6" text-anchor="end" fill="#6b7280">1.2M</text><line x1="64" x2="884" y1="78.79999999999998" y2="78.79999999999998" stroke="#e5e7eb"/><text x="58" y="82.79999999999998" text-anchor="end" fill="#6b7280">1.6M</text><line x1="64" x2="884" y1="34" y2="34" stroke="#e5e7eb"/><text x="58" y="38" text-anchor="end" fill="#6b7280">2M</text><text x="64" y="274" text-anchor="middle" fill="#6b7280">0</text><text x="169.28343069910767" y="274" text-anchor="middle" fill="#6b7280">2</text><text x="274.56686139821534" y="274" text-anchor="middle" fill="#6b7280">4</text><text x="379.85029209732295" y="274" text-anchor="middle" fill="#6b7280">6</text><text x="485.1337227964307" y="274" text-anchor="middle" fill="#6b7280">8</text><text x="590.4171534955383" y="274" text-anchor="middle" fill="#6b7280">10</text><text x="695.7005841946459" y="274" text-anchor="middle" fill="#6b7280">12</text><text x="800.9840148937536" y="274" text-anchor="middle" fill="#6b7280">14</text><text x="474" y="294" text-anchor="middle" fill="#6b7280">seconds since start</text><text x="14" y="146" transform="rotate(-90 14 146)" text-anchor="middle" fill="#6b7280">req/s</text><path d="M41.7,240.9L94.4,194.3L147.0,163.1L199.7,141.6L252.3,74.7L304.9,141.2L357.6,145.9L410.2,148.2L462.9,142.7L515.5,147.9L568.1,148.7L620.8,141.3L673.4,150.2L726.1,148.7L778.7,140.7L831.4,181.9L884.0,257.6" fill="none" stroke="#2563eb" stroke-width="1.6"/><path d="M41.7,228.9L94.4,169.5L147.0,153.3L199.7,136.9L252.3,110.6L304.9,143.9L357.6,145.4L410.2,148.1L462.9,142.3L515.5,148.6L568.1,146.6L620.8,144.3L673.4,148.6L726.1,146.6L778.7,143.0L831.4,193.2L884.0,258.0" fill="none" stroke="#9333ea" stroke-width="1"/><path d="M64.0,146.0L853.6,146.0" fill="none" stroke="#dc2626" stroke-width="1.6" stroke-dasharray="6 4"/><line x1="72" x2="90" y1="40" y2="40" stroke="#2563eb" stroke-width="2"/><text x="94" y="44" fill="#111827">completed/s</text><line x1="173.5" x2="191.5" y1="40" y2="40" stroke="#9333ea" stroke-width="2"/><text x="195.5" y="44" fill="#111827">dispatched/s</text><line x1="281.5" x2="299.5" y1="40" y2="40" stroke="#dc2626" stroke-width="2" stroke-dasharray="6 4"/><text x="303.5" y="44" fill="#111827">target</text></svg></div></body></html>

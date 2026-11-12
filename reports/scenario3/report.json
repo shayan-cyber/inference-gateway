@@ -1,0 +1,393 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "acknowledgement returned within 1 s",
+      "ok": true,
+      "detail": "HTTP 202 in 30.7 ms (batch b0_1jo2c, 10,000 requests, 1,143,986 bytes)"
+    },
+    {
+      "name": "callback sent only after all requests are final",
+      "ok": true,
+      "detail": "batch completed 2026-11-11T19:52:57.321Z; first attempt 2026-11-11T19:52:57.373Z (+52 ms); waiting at first attempt = 0; 9762 + 238 = 10000"
+    },
+    {
+      "name": "callback delivered after the destination recovers",
+      "ok": true,
+      "detail": "attempts: #1@+0.05s->503, #2@+1.02s->503, #3@+3.15s->200; gateway callback state = delivered"
+    },
+    {
+      "name": "callback summary matches GET /v1/batches/:id",
+      "ok": true,
+      "detail": "identical on batch_id, status, total, succeeded, failed, waiting, completed_at, created_at, duration_ms, counts, failure_breakdown"
+    },
+    {
+      "name": "every request id appears exactly once in the final result",
+      "ok": true,
+      "detail": "results API: 10000 rows, 0 dup, 0 missing, 0 non-final; callback inline: 10000 rows, 0 dup, 0 missing"
+    }
+  ],
+  "ack_ms": 30.68349999999998,
+  "ack": {
+    "batch_id": "b0_1jo2c",
+    "status": "accepted",
+    "total": 10000,
+    "accepted": 10000,
+    "rejected": 0,
+    "accepted_at": "2026-11-11T19:52:32.670Z",
+    "status_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c",
+    "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+    "callback_url": "http://127.0.0.1:9900/callback"
+  },
+  "status": {
+    "batch_id": "b0_1jo2c",
+    "status": "completed_with_failures",
+    "total": 10000,
+    "succeeded": 9762,
+    "failed": 238,
+    "failure_breakdown": {
+      "provider_or_retries": 238,
+      "expired": 0,
+      "rejected_at_admission": 0
+    },
+    "waiting": 0,
+    "counts": {
+      "queued": 0,
+      "in_flight": 0,
+      "retry_wait": 0,
+      "succeeded": 9762,
+      "failed": 238,
+      "expired": 0,
+      "rejected": 0
+    },
+    "created_at": "2026-11-11T19:52:32.670Z",
+    "completed_at": "2026-11-11T19:52:57.321Z",
+    "duration_ms": 24651,
+    "deadline_at": "2026-11-11T19:54:32.670Z",
+    "metadata": {
+      "scenario": 3
+    },
+    "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+    "callback": {
+      "url": "http://127.0.0.1:9900/callback",
+      "state": "delivered",
+      "attempts": 3,
+      "last_attempt": {
+        "attempt": 3,
+        "at": "2026-11-11T19:53:00.466Z",
+        "status": 200,
+        "error": null,
+        "duration_ms": 24
+      },
+      "first_attempt_at": "2026-11-11T19:52:57.330Z",
+      "delivered_at": "2026-11-11T19:53:00.490Z",
+      "history": [
+        {
+          "attempt": 1,
+          "at": "2026-11-11T19:52:57.330Z",
+          "status": 503,
+          "error": null,
+          "duration_ms": 69
+        },
+        {
+          "attempt": 2,
+          "at": "2026-11-11T19:52:58.333Z",
+          "status": 503,
+          "error": null,
+          "duration_ms": 28
+        },
+        {
+          "attempt": 3,
+          "at": "2026-11-11T19:53:00.466Z",
+          "status": 200,
+          "error": null,
+          "duration_ms": 24
+        }
+      ]
+    }
+  },
+  "callback_attempts": [
+    {
+      "n": 1,
+      "receivedAt": 1794426777373,
+      "attemptHeader": "1",
+      "idempotencyKey": "b0_1jo2c",
+      "batchId": "b0_1jo2c",
+      "responded": 503,
+      "statusAtArrival": {
+        "batch_id": "b0_1jo2c",
+        "status": "completed_with_failures",
+        "total": 10000,
+        "succeeded": 9762,
+        "failed": 238,
+        "failure_breakdown": {
+          "provider_or_retries": 238,
+          "expired": 0,
+          "rejected_at_admission": 0
+        },
+        "waiting": 0,
+        "counts": {
+          "queued": 0,
+          "in_flight": 0,
+          "retry_wait": 0,
+          "succeeded": 9762,
+          "failed": 238,
+          "expired": 0,
+          "rejected": 0
+        },
+        "created_at": "2026-11-11T19:52:32.670Z",
+        "completed_at": "2026-11-11T19:52:57.321Z",
+        "duration_ms": 24651,
+        "deadline_at": "2026-11-11T19:54:32.670Z",
+        "metadata": {
+          "scenario": 3
+        },
+        "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+        "callback": {
+          "url": "http://127.0.0.1:9900/callback",
+          "state": "delivering",
+          "attempts": 0,
+          "last_attempt": null,
+          "first_attempt_at": "2026-11-11T19:52:57.330Z",
+          "delivered_at": null,
+          "history": []
+        }
+      },
+      "body": {
+        "event": "batch.completed",
+        "batch_id": "b0_1jo2c",
+        "status": "completed_with_failures",
+        "total": 10000,
+        "succeeded": 9762,
+        "failed": 238,
+        "failure_breakdown": {
+          "provider_or_retries": 238,
+          "expired": 0,
+          "rejected_at_admission": 0
+        },
+        "waiting": 0,
+        "counts": {
+          "queued": 0,
+          "in_flight": 0,
+          "retry_wait": 0,
+          "succeeded": 9762,
+          "failed": 238,
+          "expired": 0,
+          "rejected": 0
+        },
+        "created_at": "2026-11-11T19:52:32.670Z",
+        "completed_at": "2026-11-11T19:52:57.321Z",
+        "duration_ms": 24651,
+        "deadline_at": "2026-11-11T19:54:32.670Z",
+        "metadata": {
+          "scenario": 3
+        },
+        "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+        "results": "[10000 results]"
+      }
+    },
+    {
+      "n": 2,
+      "receivedAt": 1794426778341,
+      "attemptHeader": "2",
+      "idempotencyKey": "b0_1jo2c",
+      "batchId": "b0_1jo2c",
+      "responded": 503,
+      "statusAtArrival": {
+        "batch_id": "b0_1jo2c",
+        "status": "completed_with_failures",
+        "total": 10000,
+        "succeeded": 9762,
+        "failed": 238,
+        "failure_breakdown": {
+          "provider_or_retries": 238,
+          "expired": 0,
+          "rejected_at_admission": 0
+        },
+        "waiting": 0,
+        "counts": {
+          "queued": 0,
+          "in_flight": 0,
+          "retry_wait": 0,
+          "succeeded": 9762,
+          "failed": 238,
+          "expired": 0,
+          "rejected": 0
+        },
+        "created_at": "2026-11-11T19:52:32.670Z",
+        "completed_at": "2026-11-11T19:52:57.321Z",
+        "duration_ms": 24651,
+        "deadline_at": "2026-11-11T19:54:32.670Z",
+        "metadata": {
+          "scenario": 3
+        },
+        "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+        "callback": {
+          "url": "http://127.0.0.1:9900/callback",
+          "state": "delivering",
+          "attempts": 1,
+          "last_attempt": {
+            "attempt": 1,
+            "at": "2026-11-11T19:52:57.330Z",
+            "status": 503,
+            "error": null,
+            "duration_ms": 69
+          },
+          "first_attempt_at": "2026-11-11T19:52:57.330Z",
+          "delivered_at": null,
+          "history": [
+            {
+              "attempt": 1,
+              "at": "2026-11-11T19:52:57.330Z",
+              "status": 503,
+              "error": null,
+              "duration_ms": 69
+            }
+          ]
+        }
+      },
+      "body": {
+        "event": "batch.completed",
+        "batch_id": "b0_1jo2c",
+        "status": "completed_with_failures",
+        "total": 10000,
+        "succeeded": 9762,
+        "failed": 238,
+        "failure_breakdown": {
+          "provider_or_retries": 238,
+          "expired": 0,
+          "rejected_at_admission": 0
+        },
+        "waiting": 0,
+        "counts": {
+          "queued": 0,
+          "in_flight": 0,
+          "retry_wait": 0,
+          "succeeded": 9762,
+          "failed": 238,
+          "expired": 0,
+          "rejected": 0
+        },
+        "created_at": "2026-11-11T19:52:32.670Z",
+        "completed_at": "2026-11-11T19:52:57.321Z",
+        "duration_ms": 24651,
+        "deadline_at": "2026-11-11T19:54:32.670Z",
+        "metadata": {
+          "scenario": 3
+        },
+        "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+        "results": "[10000 results]"
+      }
+    },
+    {
+      "n": 3,
+      "receivedAt": 1794426780473,
+      "attemptHeader": "3",
+      "idempotencyKey": "b0_1jo2c",
+      "batchId": "b0_1jo2c",
+      "responded": 200,
+      "statusAtArrival": {
+        "batch_id": "b0_1jo2c",
+        "status": "completed_with_failures",
+        "total": 10000,
+        "succeeded": 9762,
+        "failed": 238,
+        "failure_breakdown": {
+          "provider_or_retries": 238,
+          "expired": 0,
+          "rejected_at_admission": 0
+        },
+        "waiting": 0,
+        "counts": {
+          "queued": 0,
+          "in_flight": 0,
+          "retry_wait": 0,
+          "succeeded": 9762,
+          "failed": 238,
+          "expired": 0,
+          "rejected": 0
+        },
+        "created_at": "2026-11-11T19:52:32.670Z",
+        "completed_at": "2026-11-11T19:52:57.321Z",
+        "duration_ms": 24651,
+        "deadline_at": "2026-11-11T19:54:32.670Z",
+        "metadata": {
+          "scenario": 3
+        },
+        "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+        "callback": {
+          "url": "http://127.0.0.1:9900/callback",
+          "state": "delivering",
+          "attempts": 2,
+          "last_attempt": {
+            "attempt": 2,
+            "at": "2026-11-11T19:52:58.333Z",
+            "status": 503,
+            "error": null,
+            "duration_ms": 28
+          },
+          "first_attempt_at": "2026-11-11T19:52:57.330Z",
+          "delivered_at": null,
+          "history": [
+            {
+              "attempt": 1,
+              "at": "2026-11-11T19:52:57.330Z",
+              "status": 503,
+              "error": null,
+              "duration_ms": 69
+            },
+            {
+              "attempt": 2,
+              "at": "2026-11-11T19:52:58.333Z",
+              "status": 503,
+              "error": null,
+              "duration_ms": 28
+            }
+          ]
+        }
+      },
+      "body": {
+        "event": "batch.completed",
+        "batch_id": "b0_1jo2c",
+        "status": "completed_with_failures",
+        "total": 10000,
+        "succeeded": 9762,
+        "failed": 238,
+        "failure_breakdown": {
+          "provider_or_retries": 238,
+          "expired": 0,
+          "rejected_at_admission": 0
+        },
+        "waiting": 0,
+        "counts": {
+          "queued": 0,
+          "in_flight": 0,
+          "retry_wait": 0,
+          "succeeded": 9762,
+          "failed": 238,
+          "expired": 0,
+          "rejected": 0
+        },
+        "created_at": "2026-11-11T19:52:32.670Z",
+        "completed_at": "2026-11-11T19:52:57.321Z",
+        "duration_ms": 24651,
+        "deadline_at": "2026-11-11T19:54:32.670Z",
+        "metadata": {
+          "scenario": 3
+        },
+        "results_url": "http://127.0.0.1:8000/v1/batches/b0_1jo2c/results",
+        "results": "[10000 results]"
+      }
+    }
+  ],
+  "final_states": {
+    "succeeded": 9762,
+    "failed (provider_permanent_error)": 238
+  },
+  "attempts": {
+    "1": 9120,
+    "2": 803,
+    "3": 73,
+    "4": 4
+  }
+}

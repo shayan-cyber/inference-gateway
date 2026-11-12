@@ -1,0 +1,23 @@
+{
+  "name": "inference-gateway",
+  "version": "1.0.0",
+  "description": "High-throughput inference dispatch under per-model RPM/TPM limits, with a provider simulator, load generator and validation scenarios.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "provider": "node src/provider/server.js",
+    "gateway": "node src/gateway/server.js",
+    "loadgen": "node src/loadgen/cli.js",
+    "stack": "node scenarios/stack.js",
+    "test": "node --test",
+    "scenario1": "node scenarios/scenario1.js",
+    "scenario2": "node scenarios/scenario2.js",
+    "scenario3": "node scenarios/scenario3.js",
+    "bench": "node scenarios/bench.js",
+    "evidence": "node scenarios/run-all.js"
+  }
+}

@@ -1,0 +1,6 @@
+node_modules/
+*.log
+reports/**/logs/
+.DS_Store
+evidence-run.log
+reports/stack-logs/

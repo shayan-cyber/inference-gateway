@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inference Gateway</title>
+<style>
+  :root {
+    --bg: #f7f7f8; --panel: #ffffff; --text: #111827; --muted: #6b7280; --line: #e5e7eb;
+    --accent: #2563eb; --ok: #16a34a; --warn: #d97706; --bad: #dc2626; --limit: #dc2626;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0f1115; --panel: #171a21; --text: #e5e7eb; --muted: #9ca3af; --line: #2a2f3a;
+      --accent: #60a5fa; --ok: #4ade80; --warn: #fbbf24; --bad: #f87171; --limit: #f87171; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.45 system-ui, -apple-system, Segoe UI, sans-serif; background: var(--bg); color: var(--text); }
+  header { padding: 16px 20px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+  header h1 { font-size: 18px; margin: 0; }
+  header .meta { color: var(--muted); font-size: 12px; }
+  main { padding: 16px 20px; max-width: 1280px; margin: 0 auto; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .card .k { color: var(--muted); font-size: 12px; }
+  .card .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .models { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 14px; }
+  .model { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+  .model h2 { margin: 0 0 8px; font-size: 16px; display: flex; justify-content: space-between; gap: 8px; }
+  .pill { font-size: 11px; padding: 2px 8px; border-radius: 99px; background: var(--line); color: var(--muted); font-weight: 500; }
+  .pill.bad { background: var(--bad); color: #fff; }
+  table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  td { padding: 3px 0; border-bottom: 1px solid var(--line); }
+  td:last-child { text-align: right; }
+  .bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin: 6px 0 2px; }
+  .bar > div { height: 100%; background: var(--ok); }
+  svg { width: 100%; height: 160px; display: block; margin-top: 8px; }
+  form { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; align-items: center; }
+  input { width: 130px; padding: 5px 7px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); }
+  button { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+  button.secondary { background: transparent; color: var(--accent); }
+  .legend { font-size: 11px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+  .legend i { display: inline-block; width: 12px; height: 2px; vertical-align: middle; margin-right: 4px; }
+  .err { color: var(--bad); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Inference Gateway</h1>
+  <span class="meta" id="meta">connecting…</span>
+</header>
+<main>
+  <div class="cards" id="cards"></div>
+  <div class="models" id="models"></div>
+</main>
+<script>
+const fmt = (n) => n == null || !isFinite(n) ? '–' : Math.round(n).toLocaleString('en-US');
+const WINDOW_S = 180;
+const el = (id) => document.getElementById(id);
+const built = new Set();
+
+function card(k, v) { return `<div class="card"><div class="k">${k}</div><div class="v">${v}</div></div>`; }
+
+function chart(svg, rows, fields) {
+  const idx = Object.fromEntries(fields.map((f, i) => [f, i]));
+  const now = Date.now();
+  const pts = rows.filter((r) => r[0] >= now - WINDOW_S * 1000 && r[0] < Math.floor(now / 1000) * 1000);
+  const W = 560; const H = 160; const pad = 30;
+  const disp = pts.map((r) => [r[0], r[idx.dispatched] - r[idx.rate_limited]]);
+  const done = pts.map((r) => [r[0], r[idx.succeeded] + r[idx.failed]]);
+  const lim = pts.map((r) => [r[0], r[idx.limit_rpm] / 60]);
+  let ymax = 1;
+  for (const s of [disp, done, lim]) for (const [, y] of s) if (y > ymax) ymax = y;
+  ymax *= 1.15;
+  const X = (t) => pad + ((t - (now - WINDOW_S * 1000)) / (WINDOW_S * 1000)) * (W - pad - 4);
+  const Y = (y) => H - 18 - (y / ymax) * (H - 28);
+  const path = (s) => s.map(([t, y], i) => `${i ? 'L' : 'M'}${X(t).toFixed(1)},${Y(y).toFixed(1)}`).join('');
+  const css = getComputedStyle(document.documentElement);
+  let g = '';
+  for (let i = 0; i <= 3; i++) {
+    const y = (ymax * i) / 3;
+    g += `<line x1="${pad}" x2="${W}" y1="${Y(y)}" y2="${Y(y)}" stroke="${css.getPropertyValue('--line')}"/>`;
+    g += `<text x="${pad - 4}" y="${Y(y) + 4}" font-size="10" text-anchor="end" fill="${css.getPropertyValue('--muted')}">${fmt(y)}</text>`;
+  }
+  g += `<text x="${W}" y="${H - 4}" font-size="10" text-anchor="end" fill="${css.getPropertyValue('--muted')}">last ${WINDOW_S}s</text>`;
+  g += `<path d="${path(lim)}" fill="none" stroke="${css.getPropertyValue('--limit')}" stroke-dasharray="5 4" stroke-width="1.5"/>`;
+  g += `<path d="${path(disp)}" fill="none" stroke="${css.getPropertyValue('--accent')}" stroke-width="1.6"/>`;
+  g += `<path d="${path(done)}" fill="none" stroke="${css.getPropertyValue('--ok')}" stroke-width="1.2"/>`;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.innerHTML = g;
+}
+
+function buildModel(name) {
+  const div = document.createElement('div');
+  div.className = 'model';
+  div.id = `m-${name}`;
+  div.innerHTML = `
+    <h2><span>${name}</span><span class="pill" data-k="state"></span></h2>
+    <table>
+      <tr><td>Provider limit</td><td data-k="prov"></td></tr>
+      <tr><td>Operator cap</td><td data-k="cap"></td></tr>
+      <tr><td><b>Effective limit</b></td><td data-k="eff"></td></tr>
+      <tr><td>Sent in trailing 60 s (req / tokens)</td><td data-k="win"></td></tr>
+      <tr><td>Queue depth / in flight</td><td data-k="q"></td></tr>
+      <tr><td>Latency p50 / p95 / p99 (ms, end-to-end)</td><td data-k="lat"></td></tr>
+    </table>
+    <div class="bar"><div data-k="bar"></div></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>dispatched/s</span><span><i style="background:var(--ok)"></i>completed/s</span><span><i style="background:var(--limit)"></i>limit RPM/60</span></div>
+    <svg data-k="chart" preserveAspectRatio="none"></svg>
+    <form>
+      <label>Operator cap</label>
+      <input name="rpm" placeholder="RPM (blank = none)" inputmode="numeric">
+      <input name="tpm" placeholder="TPM (blank = none)" inputmode="numeric">
+      <button type="submit">Apply</button>
+      <button type="button" class="secondary" data-k="clear">Clear cap</button>
+      <span data-k="msg" class="legend"></span>
+    </form>`;
+  const form = div.querySelector('form');
+  const send = async (body) => {
+    const msg = div.querySelector('[data-k=msg]');
+    try {
+      const r = await fetch(`/v1/models/${encodeURIComponent(name)}/limits`, { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+      const j = await r.json();
+      msg.textContent = r.ok ? `effective now ${fmt(j.effective.rpm)} RPM / ${fmt(j.effective.tpm)} TPM` : j.message;
+      msg.className = r.ok ? 'legend' : 'legend err';
+    } catch (e) { msg.textContent = e.message; msg.className = 'legend err'; }
+  };
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const body = {};
+    for (const k of ['rpm', 'tpm']) { const v = fd.get(k).trim(); body[k] = v === '' ? null : Number(v.replace(/[,_]/g, '')); }
+    send(body);
+  });
+  div.querySelector('[data-k=clear]').addEventListener('click', () => { form.reset(); send({ rpm: null, tpm: null }); });
+  el('models').appendChild(div);
+}
+
+async function refresh() {
+  try {
+    const s = await (await fetch(`/v1/stats?series=1&since_ms=${Date.now() - (WINDOW_S + 5) * 1000}`)).json();
+    const t = s.totals;
+    el('meta').textContent = `pid ${s.pid} · ${s.shards} engine shard(s) · up since ${s.started_at.replace('T', ' ').slice(0, 19)}Z · refreshed ${new Date().toLocaleTimeString()}`;
+    el('cards').innerHTML = [
+      card('accepted', fmt(t.accepted)), card('rejected (429)', fmt(t.rejected)), card('waiting', fmt(t.waiting)),
+      card('succeeded', fmt(t.succeeded)), card('failed', fmt(t.failed)), card('expired', fmt(t.expired)),
+      card('retries', fmt(t.retried)), card('provider 429s', fmt(t.rateLimited)),
+      card('batches done', fmt(t.batchesCompleted)), card('callbacks ok / failed', `${fmt(t.callbacksDelivered)} / ${fmt(t.callbacksFailed)}`),
+    ].join('');
+    for (const [name, m] of Object.entries(s.models)) {
+      if (!built.has(name)) { buildModel(name); built.add(name); }
+      const d = el(`m-${name}`);
+      const set = (k, v) => { d.querySelector(`[data-k=${k}]`).innerHTML = v; };
+      const L = m.limits;
+      set('prov', `${fmt(L.provider_rpm)} RPM · ${fmt(L.provider_tpm)} TPM`);
+      set('cap', L.cap_rpm == null && L.cap_tpm == null ? 'none' : `${fmt(L.cap_rpm)} RPM · ${fmt(L.cap_tpm)} TPM`);
+      set('eff', `<b>${fmt(L.effective_rpm)} RPM · ${fmt(L.effective_tpm)} TPM</b>`);
+      set('win', `${fmt(m.dispatched_last_60s.requests)} (${((m.utilization_last_60s.rpm || 0) * 100).toFixed(1)}%) / ${fmt(m.dispatched_last_60s.tokens)} (${((m.utilization_last_60s.tpm || 0) * 100).toFixed(1)}%)`);
+      set('q', `${fmt(m.queue_depth)} / ${fmt(m.inflight)}`);
+      set('lat', `${fmt(m.latency_ms.p50)} / ${fmt(m.latency_ms.p95)} / ${fmt(m.latency_ms.p99)}`);
+      const u = Math.max(m.utilization_last_60s.rpm || 0, m.utilization_last_60s.tpm || 0);
+      const bar = d.querySelector('[data-k=bar]');
+      bar.style.width = `${Math.min(100, u * 100)}%`;
+      bar.style.background = u > 1 ? 'var(--bad)' : u > 0.9 ? 'var(--warn)' : 'var(--ok)';
+      const st = d.querySelector('[data-k=state]');
+      st.textContent = m.paused_after_429 ? 'backing off (429)' : m.queue_depth > 0 ? 'at limit, queueing' : 'idle / under limit';
+      st.className = m.paused_after_429 ? 'pill bad' : 'pill';
+      chart(d.querySelector('[data-k=chart]'), m.series || [], s.series_fields);
+    }
+  } catch (e) {
+    el('meta').innerHTML = `<span class="err">cannot reach gateway: ${e.message}</span>`;
+  }
+}
+refresh();
+setInterval(refresh, 1000);
+</script>
+</body>
+</html>
